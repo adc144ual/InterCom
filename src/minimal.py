@@ -14,6 +14,10 @@ import psutil
 import logging
 import soundfile as sf
 import logging
+
+import echo_cancellation as ec
+
+
 #FORMAT = "%(module)s: %(message)s"
 FORMAT = "(%(levelname)s) %(module)s: %(message)s"
 #logging.basicConfig(format=FORMAT)
@@ -44,7 +48,7 @@ parser.add_argument("-a", "--destination_address", type=int_or_str, default="loc
 parser.add_argument("-p", "--destination_port", type=int, default=4444, help="Destination (interlocutor's listing-) port")
 parser.add_argument("-f", "--filename", type=str, help="Use a wav/oga/... file instead of the mic data")
 parser.add_argument("-t", "--reading_time", type=int, help="Time reading data (mic or file) (only with effect if --show_stats or --show_data is used)")
-parser.add_argument("-n", "--number_of_channels", type=int, default=2, help="Number of channels") # Notice that, currently, in OSX systems, the number of channels must be 1.
+parser.add_argument("-n", "--number_of_channels", type=int, default=1, help="Number of channels") # Notice that, currently, in OSX systems, the number of channels must be 1.
 
 class Minimal:
     # Some default values:
@@ -145,6 +149,7 @@ class Minimal:
             data = ADC.copy()
             packed_chunk = self.pack(data)
         else:
+            ADC = ec.remove_echo(self, ADC)
             packed_chunk = self.pack(ADC)
         # (3) send()
         self.send(packed_chunk)
