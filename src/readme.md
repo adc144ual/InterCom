@@ -29,9 +29,11 @@ El algoritmo NLMS (Normalized Least Mean Square) es una variante optimizada del 
 - Proporciona mayor estabilidad en condiciones variables
 
 La ecuación fundamental del NLMS es:
-```
-w(n+1) = w(n) + μ * e(n)x(n) / (||x(n)||^2 + δ)
-```
+
+\[
+w(n+1) = w(n) + \mu \cdot \frac{e(n) \cdot x(n)}{\|x(n)\|^2 + \delta}
+\]
+
 
 Donde:
 - w(n): coeficientes del filtro
